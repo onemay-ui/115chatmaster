@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Master: 115統測英語對話攻略戰</title>
+    <!-- React & ReactDOM CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel standalone for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Nunito:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Nunito', 'Noto Sans TC', sans-serif;
+            background-color: #f0f2f5;
+            overscroll-behavior: none;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .typing-dot { animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        .fade-in-up { animation: fadeInUp 0.4s ease-out; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .speaker-btn { transition: all 0.2s; }
+        .speaker-btn:active { transform: scale(0.9); }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // ==========================================
+        // 115 學年度 統測英文 第二大題 (對話 11 - 20)
+        // ==========================================
+        const EXAM_DATA = [
+            {
+                year: 115,
+                id: 11,
+                title: "手機充電器",
+                scenario: "Customer 在店家詢問充電器。",
+                userSpeaker: "A",
+                speakers: { A: "Customer", B: "Clerk" },
+                dialogue: [
+                    { speaker: "A", text: "Hi, do you sell phone chargers?" },
+                    { speaker: "B", text: "Yes, over there. Take a look, please." },
+                    { speaker: "A", text: "Great, I'll take this one. How much is it?" },
+                    { speaker: "B", text: "That'll be NT$350." }
+                ],
+                postDialogue: { speaker: "A", text: "No, just the charger." },
+                translation: {
+                    dialogue: [
+                        "嗨，你們有賣手機充電器嗎？",
+                        "有的，就在那邊。請看一下。",
+                        "太好了，我要買這一個。多少錢？",
+                        "總共是350元。"
+                    ],
+                    postDialogue: "不用了，只要充電器就好。",
+                    options: { A: "就這樣嗎？", B: "還需要別的嗎？", C: "付現還是刷卡？", D: "它很好用，對吧？" }
+                },
+                correctAnswer: "B",
+                options: [
+                    { id: "A", text: "Is that all?" },
+                    { id: "B", text: "Anything else?" },
+                    { id: "C", text: "Cash or credit card?" },
+                    { id: "D", text: "It works well, right?" }
+                ],
+                explanation: "Clerk 詢問 'Anything else?' (還需要別的嗎？)，Customer 才回覆 'No, just the charger.' (不用了，只要充電器就好)。",
+                roast: "店員原本以為還能再多賣一個行動電源，殘念！",
+                vocab: ["charger (n. 充電器)", "clerk (n. 店員)", "NT$ (n. 新台幣)"]
+            },
+            {
+                year: 115,
+                id: 12,
+                title: "追星搶票記",
+                scenario: "Jane 與 Tom 討論音樂會。",
+                userSpeaker: "B",
+                speakers: { A: "Jane", B: "Tom" },
+                dialogue: [
+                    { speaker: "A", text: "Did you go to the BLACKPINK concert?" },
+                    { speaker: "B", text: "Nope. I was busy preparing for a singing competition." },
+                    { speaker: "A", text: "Oh! And did you go to the TWICE concert?" }
+                ],
+                postDialogue: { speaker: "A", text: "Lucky you! You got the tickets! I wish I were there with you." },
+                translation: {
+                    dialogue: [
+                        "你有去 BLACKPINK 的演唱會嗎？",
+                        "沒有。我忙著準備歌唱比賽。",
+                        "喔！那你有去 TWICE 的演唱會嗎？"
+                    ],
+                    postDialogue: "你真幸運！你有買到票！我真希望當時我也在那裡。",
+                    options: { A: "她們再也不會來了。", B: "我跟同學一起去了。", C: "我不是這兩團的粉絲。", D: "你上次跟我唱得很好。" }
+                },
+                correctAnswer: "B",
+                options: [
+                    { id: "A", text: "They'll never come again." },
+                    { id: "B", text: "I went with my classmates." },
+                    { id: "C", text: "I'm not a fan of these two groups." },
+                    { id: "D", text: "You sang very well with me last time." }
+                ],
+                explanation: "Jane 後文讚歎 'Lucky you! You got the tickets!'，表示 Tom 確實有去 TWICE 演唱會，選 (B)『我和同學一起去了』最合理。",
+                roast: "搶得到 TWICE 票的人都是幸運魔人，請受大家一拜！",
+                vocab: ["concert (n. 演唱會)", "competition (n. 比賽)", "ticket (n. 票)"]
+            },
+            {
+                year: 115,
+                id: 13,
+                title: "年節大吉大利",
+                scenario: "Liz 打算購買過年用的柑橘。",
+                userSpeaker: "A",
+                speakers: { A: "Liz", B: "Jay" },
+                dialogue: [
+                    { speaker: "A", text: "I'm going to the supermarket to pick up two boxes of mandarin oranges. My mother ordered them for Chinese New Year." }
+                ],
+                postDialogue: { speaker: "A", text: "They are a symbol of good fortune. We eat them to bring good luck." },
+                translation: {
+                    dialogue: [ "我要去超市拿兩箱橘子。我媽為了過年訂的。" ],
+                    postDialogue: "它們是吉祥的象徵。我們吃橘子來帶來好運。",
+                    options: { A: "從何時開始？", B: "哪間超市？", C: "為什麼是橘子？", D: "多少橘子？" }
+                },
+                correctAnswer: "C",
+                options: [
+                    { id: "A", text: "Since when?" },
+                    { id: "B", text: "Which supermarket?" },
+                    { id: "C", text: "Why mandarin oranges?" },
+                    { id: "D", text: "How many mandarin oranges?" }
+                ],
+                explanation: "Liz 後文解釋橘子象徵『大吉大利』(symbol of good fortune)，故 Jay 問的是『為什麼要選橘子？』。",
+                roast: "大吉大利，今晚吃橘！過年的吉祥話基本功請記牢。",
+                vocab: ["mandarin orange (n. 橘子/柑橘)", "symbol (n. 象徵)", "fortune (n. 運氣/財富)"]
+            },
+            {
+                year: 115,
+                id: 14,
+                title: "活到老學到老",
+                scenario: "Brian 與 Lily 聊外語學習。",
+                userSpeaker: "A",
+                speakers: { A: "Brian", B: "Lily" },
+                dialogue: [
+                    { speaker: "A", text: "I heard you're learning Spanish. Is it hard?" },
+                    { speaker: "B", text: "Yes, it is, but I like it." },
+                    { speaker: "A", text: "You're already 30." }
+                ],
+                postDialogue: { speaker: "B", text: "No, not at all. Age is not a big deal." },
+                translation: {
+                    dialogue: [
+                        "我聽說你在學西班牙文。很難嗎？",
+                        "是很難，但我很喜歡。",
+                        "你都30歲了。"
+                    ],
+                    postDialogue: "不，一點也不。年齡不是問題。",
+                    options: { A: "你打算怎麼處理？", B: "西語不是你最愛的語言嗎？", C: "你何時開始學西語的？", D: "現在學新語言難道不會太晚嗎？" }
+                },
+                correctAnswer: "D",
+                options: [
+                    { id: "A", text: "How would you deal with it anyway?" },
+                    { id: "B", text: "Isn't Spanish your favorite language?" },
+                    { id: "C", text: "When did you start learning Spanish?" },
+                    { id: "D", text: "Isn't it too late to learn a new language?" }
+                ],
+                explanation: "Brian 指出 Lily 已 30 歲，接著問『現在學不會太晚嗎？』，Lily 才回答『年齡不是問題』。",
+                roast: "30歲還正年輕好嗎！學習永遠不嫌晚！",
+                vocab: ["Spanish (n. 西班牙文)", "favorite (adj. 最喜愛的)", "deal (n. 協議/問題)"]
+            },
+            {
+                year: 115,
+                id: 15,
+                title: "高溫曝曬的塑膠水瓶",
+                scenario: "Peter 發現瓶裝水曝曬在日光下。",
+                userSpeaker: "A",
+                speakers: { A: "Peter", B: "Rose" },
+                dialogue: [
+                    { speaker: "A", text: "Gosh. I left my bottled water on my bike." },
+                    { speaker: "B", text: "For the whole afternoon? Then don't drink it. It's hot outside. The sun may have heated it up." }
+                ],
+                postDialogue: { speaker: "B", text: "Chemicals from plastics may have got into the water. It's not good for your health." },
+                translation: {
+                    dialogue: [
+                        "天哪。我把瓶裝水忘在腳踏車上了。",
+                        "忘了一整天下午嗎？那別喝了。外面很熱，太陽可能把它加熱了。"
+                    ],
+                    postDialogue: "塑膠裡的化學物質可能已經滲入水中了。這對你的健康不好。",
+                    options: { A: "那有什麼問題嗎？", B: "我把車停哪了？", C: "太陽何時下山？", D: "你為什麼帶那個？" }
+                },
+                correctAnswer: "A",
+                options: [
+                    { id: "A", text: "What's wrong with that?" },
+                    { id: "B", text: "Where did I leave my bike?" },
+                    { id: "C", text: "When's the sun going down?" },
+                    { id: "D", text: "Why did you bring that with you?" }
+                ],
+                explanation: "Peter 問『那有什麼問題？』(What's wrong with that?)，Rose 隨後解釋塑膠釋出化學物質的危害。",
+                roast: "塑膠瓶加溫等於喝微塑膠湯，Peter 生理衛生要補考了！",
+                vocab: ["bottled water (n. 瓶裝水)", "heat up (phr. 加熱)", "chemical (n. 化學物質)"]
+            },
+            {
+                year: 115,
+                id: 16,
+                title: "晚餐外食救援",
+                scenario: "吳太太與吳先生協調載小孩與準備晚餐。",
+                userSpeaker: "A",
+                speakers: { A: "Mrs. Wu", B: "Mr. Wu" },
+                dialogue: [
+                    { speaker: "A", text: "I'm going shopping. Would you mind picking up Jimmy at the sports center?" },
+                    { speaker: "B", text: "I'd like to, but I'll have an online meeting soon." },
+                    { speaker: "A", text: "We're out of food for dinner. There's nothing left in the fridge." }
+                ],
+                postDialogue: { speaker: "A", text: "Great! You go book the restaurant now and I'll get Jimmy." },
+                translation: {
+                    dialogue: [
+                        "我要去購物。你介意去運動中心接 Jimmy 嗎？",
+                        "我想去，但我等一下有線上會議。",
+                        "我們沒東西煮晚餐了。冰箱裡什麼都不剩。"
+                    ],
+                    postDialogue: "太棒了！那你現在去訂餐廳，我去接 Jimmy。",
+                    options: { A: "你對運動有興趣嗎？", B: "我現在能去購物嗎？", C: "那我們今晚去外面吃吧。", D: "讓我們一起參加線上會議。" }
+                },
+                correctAnswer: "C",
+                options: [
+                    { id: "A", text: "Are you interested in sports?" },
+                    { id: "B", text: "Can I go shopping right now?" },
+                    { id: "C", text: "Then we can eat out tonight." },
+                    { id: "D", text: "Let's do online meeting together." }
+                ],
+                explanation: "吳先生建議『那我們今晚外食吧』(Then we can eat out tonight)，吳太太隨後贊同並讓他去訂餐廳。",
+                roast: "冰箱空的+有線上會議=完美理由出去吃大餐！",
+                vocab: ["fridge (n. 冰箱)", "book (v. 預訂)", "eat out (phr. 外食)"]
+            },
+            {
+                year: 115,
+                id: 17,
+                title: "亞洲技能競賽榮耀",
+                scenario: "阿明與阿梅聊台北舉辦的技能競賽。",
+                userSpeaker: "B",
+                speakers: { A: "Ming", B: "A-Mei" },
+                dialogue: [
+                    { speaker: "A", text: "Did you know the skills contest in Taipei last year?" },
+                    { speaker: "B", text: "The Asian Skills Competition at Nangang Exhibition Center?" },
+                    { speaker: "A", text: "Yes. I was there. It was very impressive. The Taiwan team did a good job!" }
+                ],
+                postDialogue: { speaker: "A", text: "Twenty-two in total. We won the team title; we were the best in Asia!" },
+                translation: {
+                    dialogue: [
+                        "你知道去年在台北舉行的技能競賽嗎？",
+                        "在南港展覽館舉辦的亞洲技能競賽嗎？",
+                        "對。我當時在場。非常令人印象深刻。台灣隊表現得很棒！"
+                    ],
+                    postDialogue: "總共拿了22面。我們贏得了團體冠軍；我們是亞洲最強的！",
+                    options: { A: "我們有拿到金牌嗎？", B: "你搭藍22公車去嗎？", C: "你知道任何關於汽車噴漆的事嗎？", D: "我們兩年前也有參賽嗎？" }
+                },
+                correctAnswer: "A",
+                options: [
+                    { id: "A", text: "Did we get any gold medals?" },
+                    { id: "B", text: "Did you go there by the Blue 22 bus?" },
+                    { id: "C", text: "Did you know anything about Car Painting?" },
+                    { id: "D", text: "Did we also enter the competition two years ago?" }
+                ],
+                explanation: "阿明回答『總共拿了22面獎牌』，可見阿梅問的是『我們有拿到金牌/獎牌嗎？』。",
+                roast: "台灣選手讚啦！22面獎牌直接霸氣登頂亞洲第一！",
+                vocab: ["contest (n. 競賽)", "impressive (adj. 印象深刻的)", "gold medal (n. 金牌)"]
+            },
+            {
+                year: 115,
+                id: 18,
+                title: "履歷寫作攻略",
+                scenario: "Ann 請教 Ben 寫履歷的順序。",
+                userSpeaker: "A",
+                speakers: { A: "Ann", B: "Ben" },
+                dialogue: [
+                    { speaker: "A", text: "Hey, I'm writing my resume. What should I put first?" },
+                    { speaker: "B", text: "You can list your education first." },
+                    { speaker: "A", text: "What's next?" }
+                ],
+                postDialogue: { speaker: "B", text: "Yes. My advice is that you list your past jobs going backwards in time, from your last job to your first job." },
+                translation: {
+                    dialogue: [
+                        "嘿，我在寫履歷。我應該先放什麼？",
+                        "你可以先列出你的學歷。",
+                        "接下來呢？"
+                    ],
+                    postDialogue: "是的。我的建議是，你按時間倒序排列過去的工作，從最近的一份寫到第一份。",
+                    options: { A: "你的工作計畫？", B: "我的工作經驗？", C: "何時開始工作？", D: "為何應徵這份工作？" }
+                },
+                correctAnswer: "B",
+                options: [
+                    { id: "A", text: "Your job plan?" },
+                    { id: "B", text: "My work experience?" },
+                    { id: "C", text: "When to start working?" },
+                    { id: "D", text: "Why applying for this job?" }
+                ],
+                explanation: "Ben 解釋要按時間倒序排列『過去的工作』(past jobs)，因此 Ann 問的是『我的工作經驗嗎？』(My work experience?)。",
+                roast: "履歷格式寫得好，面試機會少不了！高職畢業前的必備技能。",
+                vocab: ["resume (n. 履歷)", "education (n. 教育/學歷)", "work experience (n. 工作經驗)"]
+            },
+            {
+                year: 115,
+                id: 19,
+                title: "高齡駕照換發新制",
+                scenario: "Dave 提醒 71 歲的阿嬤換駕照規定。",
+                userSpeaker: "B",
+                speakers: { A: "Dave", B: "Grandma" },
+                dialogue: [
+                    { speaker: "A", text: "Grandma, you need to renew your driver's license if you want to keep driving." },
+                    { speaker: "B", text: "But I'm just 71. I thought only people over 75 had to do it." },
+                    { speaker: "A", text: "Not anymore. The new rules say people have to renew their licenses at 70 now." }
+                ],
+                postDialogue: { speaker: "A", text: "I totally agree, Grandma. I believe I'll still get rides from you." },
+                translation: {
+                    dialogue: [
+                        "阿嬤，如果你想繼續開車，你需要去換發駕照。",
+                        "但我才71歲。我以為75歲以上的人才需要換。",
+                        "現在不一樣了。新規定說現在70歲就要換駕照了。"
+                    ],
+                    postDialogue: "我完全同意，阿嬤。我相信我以後還是會搭你開的車。",
+                    options: { A: "也許我現在該賣車。", B: "也許是我該停止開車的時候了。", C: "我相信我能成功換到執照。", D: "我會等到70歲再換。" }
+                },
+                correctAnswer: "C",
+                options: [
+                    { id: "A", text: "Maybe I should sell my car right now." },
+                    { id: "B", text: "Maybe it's time for me to stop driving." },
+                    { id: "C", text: "I'm sure I can get my license renewed." },
+                    { id: "D", text: "I'll wait until I turn 70 to renew my license." }
+                ],
+                explanation: "阿嬤很有信心且健康，說『我確定能換到駕照』(I'm sure I can get my license renewed)，Dave 隨後回應期待繼續搭阿嬤開的車。",
+                roast: "阿嬤：我寶刀未老！帶你兜風沒問題！",
+                vocab: ["renew (v. 續約/換發)", "driver's license (n. 駕照)", "rule (n. 規定)"]
+            },
+            {
+                year: 115,
+                id: 20,
+                title: "致敬珍古德博士",
+                scenario: "Willy 與 Joan 緬懷黑猩猩學者珍古德博士。",
+                userSpeaker: "A",
+                speakers: { A: "Willy", B: "Joan" },
+                dialogue: [
+                    { speaker: "A", text: "Did you hear that Dr. Jane Goodall passed away last year?" },
+                    { speaker: "B", text: "It's so sad. She spent her whole life studying chimpanzees in Africa." }
+                ],
+                postDialogue: { speaker: "A", text: "So now we know better how chimpanzees behave in the wild." },
+                translation: {
+                    dialogue: [
+                        "你聽說珍古德博士去年過世了嗎？",
+                        "真令人難過。她一生致力於在非洲研究黑猩猩。"
+                    ],
+                    postDialogue: "所以現在我們更了解黑猩猩在野外的行為。",
+                    options: { A: "她投入很多努力保護海洋。", B: "她真的幫助人們理解這些動物。", C: "她給非洲貧童很多愛。", D: "她真的鼓勵人們照顧流浪貓。" }
+                },
+                correctAnswer: "B",
+                options: [
+                    { id: "A", text: "She put a lot of effort into protecting the oceans." },
+                    { id: "B", text: "She really helped people understand these animals." },
+                    { id: "C", text: "She gave so much love to the poor children in Africa." },
+                    { id: "D", text: "She truly encouraged people to take care of stray cats." }
+                ],
+                explanation: "前文聊珍古德博士研究黑猩猩 (chimpanzees)，選 (B)『她真的幫助人們了解這些動物』最能銜接後續『讓我們知道黑猩猩在野外的行為』。",
+                roast: "致敬偉大的保育學家！考題融入生命教育與環境保護教育讚讚的！",
+                vocab: ["chimpanzee (n. 黑猩猩)", "pass away (phr. 過世)", "wild (n. 野外)"]
+            }
+        ];
+
+        EXAM_DATA.forEach(q => q.uid = `${q.year}_${q.id}`);
+
+        const { useState, useEffect, useRef } = React;
+
+        const useTTS = () => {
+            const speak = (text, lang = 'en-US', rate = 1.0) => {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = rate;
+                window.speechSynthesis.speak(utterance);
+            };
+            return { speak };
+        };
+
+        const Button = ({ children, onClick, className, variant = 'primary', disabled = false }) => {
+            const variants = {
+                primary: "bg-blue-600 hover:bg-blue-700 text-white shadow-md",
+                secondary: "bg-gray-200 hover:bg-gray-300 text-gray-800",
+                success: "bg-green-500 hover:bg-green-600 text-white",
+                danger: "bg-red-500 hover:bg-red-600 text-white",
+                outline: "border-2 border-blue-600 text-blue-600 hover:bg-blue-50"
+            };
+            return (
+                <button onClick={onClick} disabled={disabled}
+                    className={`px-4 py-2 rounded-xl font-bold transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${variants[variant]} ${className}`}>
+                    {children}
+                </button>
+            );
+        };
+
+        const ChatBubble = ({ text, translationText, speaker, isUser, isSystem, onPlayAudio, isContextHint, isPracticeMode }) => {
+            const [showChinese, setShowChinese] = useState(false);
+
+            if (isSystem) {
+                return (
+                    <div className="flex justify-center my-4">
+                        <span className="bg-gray-200 text-gray-600 text-xs px-3 py-1 rounded-full shadow-sm">{text}</span>
+                    </div>
+                );
+            }
+
+            if (isContextHint) {
+                return (
+                    <div className="flex flex-col items-center mb-4 fade-in-up w-full opacity-90">
+                         <div className="text-xs text-blue-500 font-bold mb-1 tracking-wider uppercase flex items-center">
+                            <i className="fas fa-info-circle mr-1"></i> Next Sentence Hint
+                         </div>
+                         <div className="max-w-[85%] border-2 border-dashed border-blue-300 bg-blue-50 px-4 py-2 rounded-xl text-gray-700 text-sm text-center relative shadow-sm">
+                            <span className="font-bold mr-1 text-blue-800">{speaker}:</span> {text}
+                            {isPracticeMode && translationText && (
+                                <div className="mt-1 pt-1 border-t border-blue-200 text-xs text-gray-500">
+                                    {translationText}
+                                </div>
+                            )}
+                         </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} mb-4 fade-in-up group`}>
+                    <div className="flex items-center mb-1">
+                        <span className="text-xs text-gray-500 mx-2 font-semibold">{speaker}</span>
+                    </div>
+                    <div className={`flex items-end ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
+                        {/* Bubble */}
+                        <div className={`max-w-[80%] px-4 py-3 rounded-2xl shadow-sm text-md leading-relaxed ${
+                            isUser 
+                                ? 'bg-blue-600 text-white rounded-tr-none' 
+                                : 'bg-white text-gray-800 border border-gray-100 rounded-tl-none'
+                        }`}>
+                            <div>{text}</div>
+                            {isPracticeMode && showChinese && translationText && (
+                                <div className={`mt-2 pt-2 border-t text-xs ${isUser ? 'border-blue-400 text-blue-100' : 'border-gray-200 text-gray-500'}`}>
+                                    {translationText}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Controls */}
+                        <div className={`flex items-center ${isUser ? 'mr-2 space-x-1' : 'ml-2 space-x-1'}`}>
+                            <button onClick={() => onPlayAudio(text)}
+                                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors speaker-btn ${
+                                    isUser 
+                                        ? 'bg-blue-100 text-blue-600 hover:bg-blue-200' 
+                                        : 'bg-gray-100 text-gray-500 hover:bg-blue-100 hover:text-blue-600'
+                                }`}
+                                title="Listen">
+                                <i className="fas fa-volume-up text-xs"></i>
+                            </button>
+                            {isPracticeMode && translationText && (
+                                <button onClick={() => setShowChinese(!showChinese)}
+                                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
+                                        showChinese 
+                                            ? 'bg-yellow-400 text-yellow-900 shadow-sm' 
+                                            : 'bg-gray-100 text-gray-400 hover:bg-gray-200 hover:text-gray-600'
+                                    }`}
+                                    title="Toggle Translation">
+                                    中
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const ReviewCard = ({ question }) => {
+            const [showTranslation, setShowTranslation] = useState(false);
+            return (
+                <div className="bg-white p-4 rounded-xl border border-red-100 shadow-sm mb-4">
+                    <div className="flex justify-between items-start mb-2">
+                        <span className="bg-red-100 text-red-600 text-xs px-2 py-1 rounded font-bold">Q{question.id} ({question.year})</span>
+                        <button onClick={() => setShowTranslation(!showTranslation)} className="text-xs text-blue-500 font-bold hover:underline">
+                            {showTranslation ? 'Hide Translation' : 'Show Translation'}
+                        </button>
+                    </div>
+                    <div className="space-y-2 mb-4 bg-gray-50 p-3 rounded-lg text-sm">
+                        {question.dialogue.map((line, i) => (
+                            <div key={i} className="mb-2 border-b border-gray-200 pb-2 last:border-0 last:pb-0">
+                                <p className="font-semibold text-gray-700"><span className="text-gray-400 mr-2">{question.speakers[line.speaker]}:</span>{line.text}</p>
+                                {showTranslation && <p className="text-gray-500 mt-1 text-xs pl-8">{question.translation.dialogue[i]}</p>}
+                            </div>
+                        ))}
+                        {question.postDialogue && (
+                            <div className="mt-2 pt-2 border-t border-blue-200 bg-blue-50 p-2 rounded">
+                                <p className="font-semibold text-gray-700"><span className="text-gray-400 mr-2">{question.speakers[question.postDialogue.speaker]}:</span>{question.postDialogue.text}</p>
+                                {showTranslation && <p className="text-gray-500 mt-1 text-xs pl-8">{question.translation.postDialogue}</p>}
+                            </div>
+                        )}
+                    </div>
+                    <div className="text-sm">
+                        <p className="font-bold text-gray-700 mb-2">Options:</p>
+                        {question.options.map((opt) => {
+                            const isCorrect = opt.id === question.correctAnswer;
+                            return (
+                                <div key={opt.id} className={`p-2 rounded mb-1 ${isCorrect ? 'bg-green-100 border border-green-200' : 'opacity-60'}`}>
+                                    <div className="flex items-center">
+                                        <span className={`w-5 h-5 flex items-center justify-center rounded-full text-xs mr-2 font-bold ${isCorrect ? 'bg-green-500 text-white' : 'bg-gray-200'}`}>{opt.id}</span>
+                                        <span className={isCorrect ? 'text-green-800 font-semibold' : ''}>{opt.text}</span>
+                                        {isCorrect && <i className="fas fa-check ml-auto text-green-600"></i>}
+                                    </div>
+                                    {showTranslation && <p className="text-xs text-gray-500 mt-1 pl-7">{question.translation.options[opt.id]}</p>}
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [studentName, setStudentName] = useState('');
+            const [mode, setMode] = useState('practice'); // 'practice' | 'exam'
+            const [gameState, setGameState] = useState('welcome');
+            const [currentQIndex, setCurrentQIndex] = useState(0);
+            const [chatHistory, setChatHistory] = useState([]);
+            const [currentOptions, setCurrentOptions] = useState([]);
+            const [score, setScore] = useState(0);
+            const [hearts, setHearts] = useState(3);
+            const [feedback, setFeedback] = useState(null);
+            const [isTyping, setIsTyping] = useState(false);
+            const [showHints, setShowHints] = useState(false);
+            const [isOptionsMinimized, setIsOptionsMinimized] = useState(false);
+            const [wrongQuestionIds, setWrongQuestionIds] = useState([]);
+            
+            const { speak } = useTTS();
+            const bottomRef = useRef(null);
+            const currentQuestion = EXAM_DATA[currentQIndex];
+
+            useEffect(() => {
+                const timeoutId = setTimeout(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, 100);
+                return () => clearTimeout(timeoutId);
+            }, [chatHistory, isTyping, feedback, currentOptions, isOptionsMinimized]);
+
+            useEffect(() => {
+                if (currentOptions.length > 0) setIsOptionsMinimized(false);
+            }, [currentOptions]);
+
+            const startGame = () => {
+                if (!studentName.trim()) { alert("Please enter your name first!"); return; }
+                setGameState('playing');
+                setScore(0);
+                setHearts(3);
+                setCurrentQIndex(0);
+                setWrongQuestionIds([]);
+                loadQuestion(0);
+                speak("", 'en-US'); 
+            };
+
+            const loadQuestion = async (index) => {
+                const q = EXAM_DATA[index];
+                const userRole = q.userSpeaker || "A";
+
+                setChatHistory([{ type: 'system', text: `Question ${index + 1} / ${EXAM_DATA.length}` }]);
+                setFeedback(null);
+                setCurrentOptions([]);
+                setShowHints(false);
+
+                // 1. Dialogue stream
+                for (let i = 0; i < q.dialogue.length; i++) {
+                    const line = q.dialogue[i];
+                    const isUserLine = (line.speaker === userRole);
+
+                    setIsTyping(true);
+                    await new Promise(r => setTimeout(r, 250 + line.text.length * 8)); 
+                    setIsTyping(false);
+
+                    setChatHistory(prev => [...prev, { 
+                        ...line, 
+                        translationText: q.translation.dialogue[i],
+                        isUser: isUserLine 
+                    }]);
+                }
+
+                // 2. Post-Dialogue Hint
+                if (q.postDialogue) {
+                    await new Promise(r => setTimeout(r, 200));
+                    const isUserPost = (q.postDialogue.speaker === userRole);
+                    setChatHistory(prev => [...prev, { 
+                        ...q.postDialogue, 
+                        translationText: q.translation.postDialogue,
+                        isUser: isUserPost, 
+                        isContextHint: true 
+                    }]);
+                }
+
+                await new Promise(r => setTimeout(r, 250));
+                setCurrentOptions(q.options);
+            };
+
+            const handleAnswer = (optionId) => {
+                const q = currentQuestion;
+                const selectedOption = q.options.find(o => o.id === optionId);
+                const isCorrect = optionId === q.correctAnswer;
+
+                setChatHistory(prev => [...prev, { 
+                    speaker: q.speakers[q.userSpeaker || "A"], 
+                    text: selectedOption.text, 
+                    translationText: q.translation.options[optionId],
+                    isUser: true 
+                }]);
+
+                if (mode === 'practice') {
+                    if (isCorrect) {
+                        speak(selectedOption.text); 
+                        setScore(s => s + 10);
+                        setFeedback({ type: 'success', msg: 'Correct! ✅', explanation: q.explanation, roast: q.roast });
+                    } else {
+                        setHearts(h => h - 1);
+                        setWrongQuestionIds(prev => { if (!prev.includes(q.uid)) return [...prev, q.uid]; return prev; });
+                        setFeedback({ type: 'error', msg: 'Oops! ❌', explanation: '這回答在語境上有點怪怪的喔，再試試看！', roast: '對方已讀不回...' });
+                    }
+                } else {
+                    if (isCorrect) {
+                        setScore(s => s + 10);
+                    } else {
+                        setWrongQuestionIds(prev => [...prev, q.uid]);
+                    }
+                    setTimeout(() => {
+                        nextQuestionSilently();
+                    }, 400);
+                }
+
+                setCurrentOptions([]);
+            };
+
+            const nextQuestionSilently = () => {
+                if (currentQIndex < EXAM_DATA.length - 1) {
+                    setCurrentQIndex(prev => prev + 1);
+                    loadQuestion(currentQIndex + 1);
+                } else {
+                    setGameState('result');
+                }
+            };
+
+            const nextQuestion = () => {
+                if (currentQIndex < EXAM_DATA.length - 1) {
+                    if (hearts === 0) setHearts(3);
+                    setCurrentQIndex(prev => prev + 1);
+                    loadQuestion(currentQIndex + 1);
+                } else {
+                    setGameState('result');
+                }
+            };
+
+            // Welcome Screen
+            if (gameState === 'welcome') {
+                return (
+                    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-indigo-600 via-blue-600 to-purple-600 text-white">
+                        <div className="bg-white/10 backdrop-blur-md p-8 rounded-3xl shadow-2xl text-center max-w-md w-full border border-white/20">
+                            <i className="fas fa-comments text-6xl mb-4 text-yellow-300 animate-bounce"></i>
+                            <h1 className="text-4xl font-black mb-1 tracking-tight">Chat Master</h1>
+                            <p className="text-lg opacity-90 mb-6 font-light">115 統測英語對話攻略戰</p>
+                            
+                            <div className="mb-6 bg-white/20 p-1.5 rounded-2xl flex border border-white/30">
+                                <button 
+                                    onClick={() => setMode('practice')}
+                                    className={`flex-1 py-2.5 rounded-xl font-bold transition-all text-sm ${
+                                        mode === 'practice' ? 'bg-yellow-400 text-blue-900 shadow-md' : 'text-white opacity-80 hover:opacity-100'
+                                    }`}>
+                                    <i className="fas fa-graduation-cap mr-1"></i> 練習模式
+                                </button>
+                                <button 
+                                    onClick={() => setMode('exam')}
+                                    className={`flex-1 py-2.5 rounded-xl font-bold transition-all text-sm ${
+                                        mode === 'exam' ? 'bg-red-500 text-white shadow-md' : 'text-white opacity-80 hover:opacity-100'
+                                    }`}>
+                                    <i className="fas fa-stopwatch mr-1"></i> 正式測驗
+                                </button>
+                            </div>
+
+                            <div className="mb-6">
+                                <label className="block text-left text-sm font-bold mb-2 ml-1">Student Name</label>
+                                <input type="text" value={studentName} onChange={(e) => setStudentName(e.target.value)}
+                                    placeholder="請輸入名字..."
+                                    className="w-full px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-center text-lg"/>
+                            </div>
+                            
+                            <Button onClick={startGame} className="w-full text-lg py-4 bg-yellow-400 hover:bg-yellow-300 text-blue-900 shadow-xl transform transition hover:scale-105">
+                                {mode === 'practice' ? '開始練習' : '進入測驗'} <i className="fas fa-play ml-2"></i>
+                            </Button>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Results Screen
+            if (gameState === 'result') {
+                const wrongQuestions = EXAM_DATA.filter(q => wrongQuestionIds.includes(q.uid));
+                return (
+                    <div className="min-h-screen flex flex-col items-center p-6 bg-white text-gray-800">
+                        <div className="max-w-md w-full text-center">
+                            <h2 className="text-3xl font-bold mb-1 text-blue-600">
+                                {mode === 'practice' ? 'Practice Finished!' : 'Exam Completed!'}
+                            </h2>
+                            <p className="text-xl font-medium mb-6 text-gray-600">Hi, {studentName}!</p>
+                            <div className="text-6xl font-black mb-2 text-yellow-500">{score}</div>
+                            <p className="text-gray-500 mb-8">Total Score</p>
+                            
+                            <div className="grid grid-cols-2 gap-4 mb-8">
+                                <div className="bg-gray-100 p-4 rounded-2xl">
+                                    <div className="text-2xl font-bold text-gray-700">{Math.round((score / (EXAM_DATA.length * 10)) * 100)}%</div>
+                                    <div className="text-xs text-gray-500">Accuracy</div>
+                                </div>
+                                <div className="bg-gray-100 p-4 rounded-2xl">
+                                    <div className="text-2xl font-bold text-gray-700">{wrongQuestions.length}</div>
+                                    <div className="text-xs text-gray-500">Mistakes</div>
+                                </div>
+                            </div>
+                            
+                            {wrongQuestions.length > 0 && (
+                                <div className="mb-8 text-left">
+                                    <h3 className="text-lg font-bold text-gray-800 mb-4 border-l-4 border-red-500 pl-3">Mistake Review ({wrongQuestions.length})</h3>
+                                    {wrongQuestions.map((q) => <ReviewCard key={q.uid} question={q} />)}
+                                </div>
+                            )}
+                            {wrongQuestions.length === 0 && (
+                                <div className="mb-8 p-6 bg-green-50 rounded-xl text-green-700 font-bold border border-green-200">Perfect Score! 🎉</div>
+                            )}
+                            <Button onClick={() => window.location.reload()} className="w-full">Play Again <i className="fas fa-redo ml-2"></i></Button>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Chat View
+            const otherSpeakerRole = currentQuestion.userSpeaker === "B" ? "A" : "B";
+            const partnerName = currentQuestion.speakers[otherSpeakerRole];
+
+            return (
+                <div className="h-screen flex flex-col max-w-md mx-auto bg-white shadow-2xl overflow-hidden relative">
+                    <header className="bg-white/90 backdrop-blur-sm p-4 border-b flex justify-between items-center sticky top-0 z-10 shadow-sm shrink-0">
+                        <div className="flex items-center">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold mr-3 shadow-md">
+                                {partnerName ? partnerName.charAt(0) : 'C'}
+                            </div>
+                            <div>
+                                <h2 className="font-bold text-gray-800">{partnerName}</h2>
+                                <p className="text-xs text-green-500 flex items-center"><span className="w-2 h-2 bg-green-500 rounded-full mr-1 animate-pulse"></span> Online</p>
+                            </div>
+                        </div>
+                        <div className="flex space-x-2 items-center">
+                            <span className={`text-xs px-2 py-1 rounded font-bold ${mode === 'practice' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-700'}`}>
+                                {mode === 'practice' ? '練習模式' : '正式測驗'}
+                            </span>
+                            {mode === 'practice' && (
+                                <div className="flex items-center bg-red-50 px-2 py-1 rounded-lg">
+                                    <i className="fas fa-heart text-red-500 mr-1 animate-pulse"></i>
+                                    <span className="font-bold text-red-600">{hearts}</span>
+                                </div>
+                            )}
+                            <div className="flex items-center bg-yellow-50 px-2 py-1 rounded-lg">
+                                <i className="fas fa-star text-yellow-500 mr-1"></i>
+                                <span className="font-bold text-yellow-600">{score}</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div className="flex-1 overflow-y-auto p-4 bg-gray-50 scrollbar-hide pb-20">
+                        <div className="text-center text-xs text-gray-400 mb-4 my-2">
+                            {currentQuestion.year}年 統測對話題 - Q{currentQuestion.id} {currentQuestion.title}<br/>
+                            <span className="italic">{currentQuestion.scenario}</span>
+                        </div>
+                        {chatHistory.map((msg, idx) => (
+                            <ChatBubble 
+                                key={idx} 
+                                text={msg.text} 
+                                translationText={msg.translationText}
+                                speaker={msg.isUser ? "You" : (currentQuestion.speakers[msg.speaker] || msg.speaker)} 
+                                isUser={msg.isUser} 
+                                isSystem={msg.type === 'system'} 
+                                onPlayAudio={speak} 
+                                isContextHint={msg.isContextHint}
+                                isPracticeMode={mode === 'practice'}
+                            />
+                        ))}
+                        {isTyping && (
+                            <div className="flex items-center space-x-1 ml-2 mb-4 bg-gray-200 w-16 px-3 py-3 rounded-2xl rounded-tl-none">
+                                <div className="w-2 h-2 bg-gray-500 rounded-full typing-dot"></div>
+                                <div className="w-2 h-2 bg-gray-500 rounded-full typing-dot"></div>
+                                <div className="w-2 h-2 bg-gray-500 rounded-full typing-dot"></div>
+                            </div>
+                        )}
+                        <div ref={bottomRef}></div>
+                    </div>
+
+                    {/* Feedback area */}
+                    {mode === 'practice' && feedback && (
+                        <div className={`p-4 ${feedback.type === 'success' ? 'bg-green-50' : 'bg-red-50'} border-t animate-in fade-in slide-in-from-bottom-4`}>
+                            <div className="flex items-start mb-2">
+                                <div className={`text-2xl mr-3 ${feedback.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
+                                    <i className={`fas ${feedback.type === 'success' ? 'fa-check-circle' : 'fa-times-circle'}`}></i>
+                                </div>
+                                <div>
+                                    <h3 className={`font-bold ${feedback.type === 'success' ? 'text-green-800' : 'text-red-800'}`}>{feedback.msg}</h3>
+                                    <p className="text-sm text-gray-600 mt-1">{feedback.explanation}</p>
+                                </div>
+                            </div>
+                            {feedback.roast && (
+                                <div className="mt-2 bg-white/50 p-2 rounded-lg border-l-4 border-purple-500">
+                                    <p className="text-xs text-purple-800 italic"><i className="fas fa-comment-dots mr-1"></i> {feedback.roast}</p>
+                                </div>
+                            )}
+                            <Button onClick={nextQuestion} className="w-full mt-3 shadow-none">
+                                {currentQIndex < EXAM_DATA.length - 1 ? 'Next Topic' : 'Finish'} <i className="fas fa-arrow-right ml-1"></i>
+                            </Button>
+                        </div>
+                    )}
+
+                    {/* Options selection */}
+                    {!feedback && currentOptions.length > 0 && (
+                        <div className={`transition-all duration-300 ease-in-out bg-white border-t rounded-t-3xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-20 ${isOptionsMinimized ? 'h-16 overflow-hidden' : 'h-auto'}`}>
+                            <div className="flex justify-between items-center px-4 py-3 border-b bg-gray-50/50 cursor-pointer" onClick={() => setIsOptionsMinimized(!isOptionsMinimized)}>
+                                <span className="text-xs text-gray-400 font-bold tracking-wider">YOUR REPLY {isOptionsMinimized && "(Tap to open)"}</span>
+                                <div className="flex items-center space-x-3">
+                                    {mode === 'practice' && !isOptionsMinimized && (
+                                        <button onClick={(e) => { e.stopPropagation(); setShowHints(!showHints); }} className="text-xs flex items-center text-blue-500 hover:text-blue-700 font-semibold px-2 py-1 rounded hover:bg-blue-50">
+                                            <i className="far fa-lightbulb mr-1"></i> {showHints ? 'Hide Hints' : 'Need Hints?'}
+                                        </button>
+                                    )}
+                                    <button className="text-gray-400 hover:text-gray-600 transition-colors">
+                                        <i className={`fas ${isOptionsMinimized ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+                                    </button>
+                                </div>
+                            </div>
+                            {!isOptionsMinimized && (
+                                <div className="p-4">
+                                    {mode === 'practice' && showHints && (
+                                        <div className="mb-3 p-3 bg-yellow-50 rounded-xl border border-yellow-100 text-sm text-yellow-800 slide-in-from-bottom-2 animate-in">
+                                            <div className="font-bold mb-1 text-xs uppercase text-yellow-600">Keywords:</div>
+                                            <div className="flex flex-wrap gap-1">
+                                                {currentQuestion.vocab.map((v, i) => (
+                                                    <span key={i} className="bg-white px-2 py-0.5 rounded border border-yellow-200 text-xs">{v}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div className="grid grid-cols-1 gap-2 max-h-60 overflow-y-auto">
+                                        {currentOptions.map((opt) => (
+                                            <button key={opt.id} onClick={() => handleAnswer(opt.id)} className="w-full text-left px-4 py-3 rounded-xl border-2 border-gray-100 hover:border-blue-500 hover:bg-blue-50 transition-all group flex items-center">
+                                                <span className="w-6 h-6 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-xs font-bold mr-3 group-hover:bg-blue-500 group-hover:text-white transition-colors shrink-0">{opt.id}</span>
+                                                <span className="text-gray-700 font-medium text-sm group-hover:text-blue-700">{opt.text}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
